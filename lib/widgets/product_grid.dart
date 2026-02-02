@@ -3,27 +3,21 @@ import '../models/product.dart';
 import '../controllers/product_controller.dart';
 import 'product_card.dart';
 
-class ProductGrid extends StatefulWidget {
+class ProductGrid extends StatelessWidget {
   final List<Product> products;
+  final ProductController controller;
+  final Function(Product)? onProductTap;
 
-  const ProductGrid({super.key, required this.products});
-
-  @override
-  State<ProductGrid> createState() => _ProductGridState();
-}
-
-class _ProductGridState extends State<ProductGrid> {
-  late ProductController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = ProductController(widget.products);
-  }
+  const ProductGrid({
+    super.key,
+    required this.products,
+    required this.controller,
+    this.onProductTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    List<Product> currentProducts = controller.getCurrentProducts();
+    List<Product> currentProducts = products;
 
     return Column(
       children: [
@@ -38,8 +32,12 @@ class _ProductGridState extends State<ProductGrid> {
           child: LayoutBuilder(
             builder: (context, size) {
               int column = 2;
-              if (size.maxWidth >= 600) column = 3;
-              if (size.maxWidth >= 900) column = 4;
+              if (size.maxWidth >= 600) {
+                column = 3;
+              }
+              if (size.maxWidth >= 900) {
+                column = 4;
+              }
 
               return GridView.builder(
                 padding: const EdgeInsets.all(12),
@@ -51,7 +49,15 @@ class _ProductGridState extends State<ProductGrid> {
                   childAspectRatio: 0.7,
                 ),
                 itemBuilder: (context, index) {
-                  return ProductCard(product: currentProducts[index]);
+                  Product product = currentProducts[index];
+                  return ProductCard(
+                    product: product,
+                    onTap: onProductTap != null
+                        ? () {
+                            onProductTap!(product);
+                          }
+                        : null,
+                  );
                 },
               );
             },

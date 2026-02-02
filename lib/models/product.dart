@@ -1,19 +1,20 @@
-import 'package:intl/intl.dart';
-
 class Product {
-  final int id;
-  final String namaProduct;
-  final String fotoUrl;
+  String id;
+  String namaProduct;
+  String fotoUrl;
+  String deskripsi;
 
-  const Product({
+  Product({
     required this.id,
     required this.namaProduct,
     required this.fotoUrl,
+    this.deskripsi = '',
   });
 
-  int get harga => 15000 + (id - 1) * 2500;
-  String get hargaText {
-    final formatter = NumberFormat.decimalPattern('id');
-    return 'Rp ${formatter.format(harga)}';
+  String getDeskripsi() {
+    if (deskripsi.isEmpty) {
+      return 'Deskripsi belum tersedia';
+    }
+    return deskripsi;
   }
 }

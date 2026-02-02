@@ -9,7 +9,6 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(title),
-      actions: const [Icon(Icons.search), SizedBox(width: 12)],
     );
   }
 
