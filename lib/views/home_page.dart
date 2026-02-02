@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import '../models/product.dart';
 import '../widgets/app_top_bar.dart';
 import '../widgets/app_bottom_navigation.dart';
 import '../widgets/product_grid.dart';
 import '../widgets/product_search_bar.dart';
-import '../models/product.dart';
-import '../data/products_data.dart';
 import '../controllers/home_controller.dart';
 import '../controllers/product_controller.dart';
 import 'add_product_simple_page.dart';
