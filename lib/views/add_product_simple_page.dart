@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import '../controllers/product_controller.dart';
+import '../blocs/product_bloc.dart';
+import '../blocs/product_event.dart';
 
 class AddProductSimplePage extends StatefulWidget {
-  final ProductController controller;
+  final ProductBloc bloc;
 
-  const AddProductSimplePage({super.key, required this.controller});
+  const AddProductSimplePage({super.key, required this.bloc});
 
   @override
   State<AddProductSimplePage> createState() => _AddProductSimplePageState();
@@ -72,12 +73,14 @@ class _AddProductSimplePageState extends State<AddProductSimplePage> {
               child: ElevatedButton(
                 onPressed: isValid
                     ? () {
-                        widget.controller.addProduct(
-                          namaProduct: nameController.text,
-                          fotoUrl: imageController.text,
-                          deskripsi: deskripsiController.text,
+                        widget.bloc.add(
+                          AddProductEvent(
+                            namaProduct: nameController.text,
+                            fotoUrl: imageController.text,
+                            deskripsi: deskripsiController.text,
+                          ),
                         );
-                        Navigator.pop(context, true);
+                        Navigator.pop(context);
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
@@ -91,5 +94,13 @@ class _AddProductSimplePageState extends State<AddProductSimplePage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    imageController.dispose();
+    deskripsiController.dispose();
+    super.dispose();
   }
 }

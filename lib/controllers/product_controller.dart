@@ -61,10 +61,14 @@ class ProductController {
     required String deskripsi,
   }) {
     for (int i = 0; i < allProducts.length; i++) {
-      if (allProducts[i].id == id) {
-        allProducts[i].namaProduct = namaProduct;
-        allProducts[i].fotoUrl = fotoUrl;
-        allProducts[i].deskripsi = deskripsi;
+      final product = allProducts[i];
+      if (product.id == id) {
+        allProducts[i] = Product(
+          id: product.id,
+          namaProduct: namaProduct,
+          fotoUrl: fotoUrl,
+          deskripsi: deskripsi,
+        );
         break;
       }
     }

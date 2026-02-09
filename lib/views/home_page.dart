@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../models/product.dart';
 import '../widgets/app_top_bar.dart';
 import '../widgets/app_bottom_navigation.dart';
 import '../widgets/product_grid.dart';
 import '../widgets/product_search_bar.dart';
-import '../models/product.dart';
-import '../data/products_data.dart';
 import '../controllers/home_controller.dart';
-import '../controllers/product_controller.dart';
+import '../blocs/product_bloc.dart';
+import '../blocs/product_event.dart';
+import '../blocs/product_state.dart';
 import 'add_product_simple_page.dart';
 import 'edit_product_page.dart';
 
@@ -19,92 +21,97 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final HomeController homeController = HomeController();
-  late final ProductController productController;
+  late final ProductBloc productBloc;
 
   @override
   void initState() {
     super.initState();
-    productController = ProductController(homeController.products);
+    productBloc = ProductBloc()
+      ..add(InitializeProductsEvent(homeController.products));
+  }
+
+  @override
+  void dispose() {
+    productBloc.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isProductTab = homeController.currentTabIndex == 0;
-    return Scaffold(
-      appBar: AppTopBar(title: isProductTab ? 'Produk' : 'Akun'),
+    return BlocProvider.value(
+      value: productBloc,
+      child: Scaffold(
+        appBar: AppTopBar(
+          title: homeController.currentTabIndex == 0 ? 'Produk' : 'Akun',
+        ),
+        body: homeController.currentTabIndex == 0
+            ? _buildProductTab(context)
+            : _buildEmptyTab(),
+        floatingActionButton: homeController.currentTabIndex == 0
+            ? FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddProductSimplePage(
+                        bloc: productBloc,
+                      ),
+                    ),
+                  );
+                },
+                child: const Icon(Icons.add),
+              )
+            : null,
+        bottomNavigationBar: AppBottomNavigation(
+          currentIndex: homeController.currentTabIndex,
+          onChanged: (int index) {
+            setState(() {
+              homeController.changeTab(index);
+            });
+          },
+        ),
+      ),
+    );
+  }
 
-      body: isProductTab
-          ? Column(
-              children: [
-                ProductSearchBar(
-                  products: homeController.products,
-                  onSearch: (String keyword) {
-                    setState(() {
-                      productController.searchProducts(keyword);
-                    });
-                  },
-                ),
-                Expanded(
-                  child: ProductGrid(
-                    products: productController.getCurrentProducts(),
-                    controller: productController,
-                    onProductTap: (Product product) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) {
-                            return EditProductPage(
-                              controller: productController,
-                              product: product,
-                            );
-                          },
-                        ),
-                      ).then((result) {
-                        if (result == true) {
-                          setState(() {});
-                        }
-                      });
-                    },
-                  ),
-                ),
-              ],
-            )
-          : Center(
-              child: Text(
-                'Halaman Kosong',
-                style: TextStyle(fontSize: 18, color: Colors.grey),
+  Widget _buildProductTab(BuildContext context) {
+    return BlocBuilder<ProductBloc, ProductState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            ProductSearchBar(
+              products: state.products,
+              onSearch: (String keyword) {
+                productBloc.add(SearchProductsEvent(keyword));
+              },
+            ),
+            Expanded(
+              child: ProductGrid(
+                products: state.filteredProducts,
+                onProductTap: (Product product) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditProductPage(
+                        bloc: productBloc,
+                        product: product,
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
+          ],
+        );
+      },
+    );
+  }
 
-      floatingActionButton: isProductTab
-          ? FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return AddProductSimplePage(
-                        controller: productController,
-                      );
-                    },
-                  ),
-                ).then((result) {
-                  if (result == true) {
-                    setState(() {});
-                  }
-                });
-              },
-              child: const Icon(Icons.add),
-            )
-          : null,
-
-      bottomNavigationBar: AppBottomNavigation(
-        currentIndex: homeController.currentTabIndex,
-        onChanged: (int index) {
-          setState(() {
-            homeController.changeTab(index);
-          });
-        },
+  Widget _buildEmptyTab() {
+    return Center(
+      child: Text(
+        'Halaman Kosong',
+        style: TextStyle(fontSize: 18, color: Colors.grey),
       ),
     );
   }

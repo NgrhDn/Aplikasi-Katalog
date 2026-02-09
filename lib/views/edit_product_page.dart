@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import '../controllers/product_controller.dart';
+import '../blocs/product_bloc.dart';
+import '../blocs/product_event.dart';
 import '../models/product.dart';
 
 class EditProductPage extends StatefulWidget {
-  final ProductController controller;
+  final ProductBloc bloc;
   final Product product;
 
-  const EditProductPage({
-    super.key,
-    required this.controller,
-    required this.product,
-  });
+  const EditProductPage({super.key, required this.bloc, required this.product});
 
   @override
   State<EditProductPage> createState() => _EditProductPageState();
@@ -88,13 +85,15 @@ class _EditProductPageState extends State<EditProductPage> {
                   child: ElevatedButton(
                     onPressed: isValid
                         ? () {
-                            widget.controller.editProduct(
-                              id: widget.product.id,
-                              namaProduct: nameController.text,
-                              fotoUrl: imageController.text,
-                              deskripsi: deskripsiController.text,
+                            widget.bloc.add(
+                              EditProductEvent(
+                                id: widget.product.id,
+                                namaProduct: nameController.text,
+                                fotoUrl: imageController.text,
+                                deskripsi: deskripsiController.text,
+                              ),
                             );
-                            Navigator.pop(context, true);
+                            Navigator.pop(context);
                           }
                         : null,
                     style: ElevatedButton.styleFrom(
@@ -125,11 +124,11 @@ class _EditProductPageState extends State<EditProductPage> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  widget.controller.deleteProduct(
-                                    widget.product.id,
+                                  widget.bloc.add(
+                                    DeleteProductEvent(widget.product.id),
                                   );
                                   Navigator.pop(dialogContext);
-                                  Navigator.pop(context, true);
+                                  Navigator.pop(context);
                                 },
                                 child: const Text(
                                   'Hapus',
@@ -154,5 +153,13 @@ class _EditProductPageState extends State<EditProductPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    imageController.dispose();
+    deskripsiController.dispose();
+    super.dispose();
   }
 }
