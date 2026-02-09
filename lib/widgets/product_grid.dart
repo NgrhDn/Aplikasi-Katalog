@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
-import '../controllers/product_controller.dart';
 import 'product_card.dart';
 
 class ProductGrid extends StatelessWidget {
   final List<Product> products;
-  final ProductController controller;
   final Function(Product)? onProductTap;
 
   const ProductGrid({
     super.key,
     required this.products,
-    required this.controller,
     this.onProductTap,
   });
 

@@ -1,20 +1,16 @@
 class Product {
-  String id;
-  String namaProduct;
-  String fotoUrl;
-  String deskripsi;
+  final String id;
+  final String namaProduct;
+  final String fotoUrl;
+  final String deskripsi;
 
-  Product({
+  const Product({
     required this.id,
     required this.namaProduct,
     required this.fotoUrl,
     this.deskripsi = '',
   });
 
-  String getDeskripsi() {
-    if (deskripsi.isEmpty) {
-      return 'Deskripsi belum tersedia';
-    }
-    return deskripsi;
-  }
+  String getDeskripsi() =>
+      deskripsi.isEmpty ? 'Deskripsi belum tersedia' : deskripsi;
 }
