@@ -4,41 +4,53 @@ import 'product_event.dart';
 import 'product_state.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
-  ProductBloc() : super(const ProductState()) {
-    on<InitializeProductsEvent>(_onInitializeProducts);
-    on<SearchProductsEvent>(_onSearchProducts);
-    on<AddProductEvent>(_onAddProduct);
-    on<EditProductEvent>(_onEditProduct);
-    on<DeleteProductEvent>(_onDeleteProduct);
+  ProductBloc() : super(const ProductState(status: ProductStatus.loading)) {
+    on<InitializeProductsEvent>(onInitializeProducts);
+    on<SearchProductsEvent>(onSearchProducts);
+    on<AddProductEvent>(onAddProduct);
+    on<EditProductEvent>(onEditProduct);
+    on<DeleteProductEvent>(onDeleteProduct);
   }
 
-  void _onInitializeProducts(
+  void onInitializeProducts(
     InitializeProductsEvent event,
     Emitter<ProductState> emit,
   ) {
-    _emitProducts(emit, event.products, keyword: '');
+    setProducts(
+      emit,
+      event.products,
+      keyword: '',
+      status: ProductStatus.loaded,
+    );
   }
 
-  void _onSearchProducts(
-    SearchProductsEvent event,
-    Emitter<ProductState> emit,
-  ) {
-    _emitProducts(emit, state.products, keyword: event.keyword);
+  void onSearchProducts(SearchProductsEvent event, Emitter<ProductState> emit) {
+    setProducts(emit, state.products, keyword: event.keyword);
   }
 
-  void _onAddProduct(AddProductEvent event, Emitter<ProductState> emit) {
+  void onAddProduct(AddProductEvent event, Emitter<ProductState> emit) {
+    if (event.namaProduct.trim().isEmpty) {
+      setError(emit, 'Nama produk tidak boleh kosong');
+      return;
+    }
+
     final newProduct = Product(
-      id: _generateUniqueId(),
+      id: generateUniqueId(),
       namaProduct: event.namaProduct,
       fotoUrl: event.fotoUrl,
       deskripsi: event.deskripsi,
     );
 
     final updatedProducts = [...state.products, newProduct];
-    _emitProducts(emit, updatedProducts);
+    setProducts(emit, updatedProducts);
   }
 
-  void _onEditProduct(EditProductEvent event, Emitter<ProductState> emit) {
+  void onEditProduct(EditProductEvent event, Emitter<ProductState> emit) {
+    if (event.namaProduct.trim().isEmpty) {
+      setError(emit, 'Nama produk tidak boleh kosong');
+      return;
+    }
+
     final updatedProducts = state.products.map((product) {
       if (product.id == event.id) {
         return Product(
@@ -50,32 +62,44 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       }
       return product;
     }).toList();
-    _emitProducts(emit, updatedProducts);
+    setProducts(emit, updatedProducts);
   }
 
-  void _onDeleteProduct(DeleteProductEvent event, Emitter<ProductState> emit) {
+  void onDeleteProduct(DeleteProductEvent event, Emitter<ProductState> emit) {
+    if (event.id.trim().isEmpty) {
+      setError(emit, 'ID produk tidak valid');
+      return;
+    }
+
     final updatedProducts = state.products
         .where((product) => product.id != event.id)
         .toList();
-    _emitProducts(emit, updatedProducts);
+    setProducts(emit, updatedProducts);
   }
 
-  void _emitProducts(
+  void setProducts(
     Emitter<ProductState> emit,
     List<Product> products, {
     String? keyword,
+    ProductStatus status = ProductStatus.loaded,
   }) {
     final activeKeyword = keyword ?? state.keyword;
     emit(
       state.copyWith(
+        status: status,
         products: products,
-        filteredProducts: _filterProducts(products, activeKeyword),
+        filteredProducts: filterProducts(products, activeKeyword),
         keyword: activeKeyword,
+        errorMessage: '',
       ),
     );
   }
 
-  List<Product> _filterProducts(List<Product> products, String keyword) {
+  void setError(Emitter<ProductState> emit, String message) {
+    emit(state.copyWith(status: ProductStatus.error, errorMessage: message));
+  }
+
+  List<Product> filterProducts(List<Product> products, String keyword) {
     if (keyword.isEmpty) {
       return List<Product>.from(products);
     }
@@ -88,7 +112,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         .toList();
   }
 
-  String _generateUniqueId() {
+  String generateUniqueId() {
     return 'PRD-${DateTime.now().millisecondsSinceEpoch}';
   }
 }

@@ -10,10 +10,10 @@ class EditProductPage extends StatefulWidget {
   const EditProductPage({super.key, required this.bloc, required this.product});
 
   @override
-  State<EditProductPage> createState() => _EditProductPageState();
+  State<EditProductPage> createState() => EditProductPageState();
 }
 
-class _EditProductPageState extends State<EditProductPage> {
+class EditProductPageState extends State<EditProductPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController imageController = TextEditingController();
   TextEditingController deskripsiController = TextEditingController();

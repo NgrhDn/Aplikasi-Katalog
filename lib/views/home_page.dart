@@ -16,10 +16,10 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   final HomeController homeController = HomeController();
   late final ProductBloc productBloc;
 
@@ -45,17 +45,16 @@ class _HomePageState extends State<HomePage> {
           title: homeController.currentTabIndex == 0 ? 'Produk' : 'Akun',
         ),
         body: homeController.currentTabIndex == 0
-            ? _buildProductTab(context)
-            : _buildEmptyTab(),
+            ? buildProductTab(context)
+            : buildEmptyTab(),
         floatingActionButton: homeController.currentTabIndex == 0
             ? FloatingActionButton(
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddProductSimplePage(
-                        bloc: productBloc,
-                      ),
+                      builder: (context) =>
+                          AddProductSimplePage(bloc: productBloc),
                     ),
                   );
                 },
@@ -74,9 +73,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildProductTab(BuildContext context) {
+  Widget buildProductTab(BuildContext context) {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
+        if (state.status == ProductStatus.loading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (state.status == ProductStatus.error) {
+          final message = state.errorMessage.isEmpty
+              ? 'Terjadi error'
+              : state.errorMessage;
+          return Center(child: Text(message));
+        }
+
         return Column(
           children: [
             ProductSearchBar(
@@ -92,10 +102,8 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EditProductPage(
-                        bloc: productBloc,
-                        product: product,
-                      ),
+                      builder: (context) =>
+                          EditProductPage(bloc: productBloc, product: product),
                     ),
                   );
                 },
@@ -107,7 +115,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildEmptyTab() {
+  Widget buildEmptyTab() {
     return Center(
       child: Text(
         'Halaman Kosong',
