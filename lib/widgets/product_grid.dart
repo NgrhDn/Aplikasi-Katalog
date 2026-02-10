@@ -6,39 +6,27 @@ class ProductGrid extends StatelessWidget {
   final List<Product> products;
   final Function(Product)? onProductTap;
 
-  const ProductGrid({
-    super.key,
-    required this.products,
-    this.onProductTap,
-  });
+  const ProductGrid({super.key, required this.products, this.onProductTap});
 
   @override
   Widget build(BuildContext context) {
-    List<Product> currentProducts = products;
-
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(12),
           child: Text(
-            'Total ${currentProducts.length} produk',
+            'Total ${products.length} produk',
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
         Expanded(
           child: LayoutBuilder(
             builder: (context, size) {
-              int column = 2;
-              if (size.maxWidth >= 600) {
-                column = 3;
-              }
-              if (size.maxWidth >= 900) {
-                column = 4;
-              }
+              int column = getColumnCount(size.maxWidth);
 
               return GridView.builder(
                 padding: const EdgeInsets.all(12),
-                itemCount: currentProducts.length,
+                itemCount: products.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: column,
                   crossAxisSpacing: 12,
@@ -46,7 +34,7 @@ class ProductGrid extends StatelessWidget {
                   childAspectRatio: 0.7,
                 ),
                 itemBuilder: (context, index) {
-                  Product product = currentProducts[index];
+                  Product product = products[index];
                   return ProductCard(
                     product: product,
                     onTap: onProductTap != null
@@ -62,5 +50,16 @@ class ProductGrid extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  int getColumnCount(double width) {
+    int column = 2;
+    if (width >= 600) {
+      column = 3;
+    }
+    if (width >= 900) {
+      column = 4;
+    }
+    return column;
   }
 }

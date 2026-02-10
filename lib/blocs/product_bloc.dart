@@ -16,21 +16,22 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     InitializeProductsEvent event,
     Emitter<ProductState> emit,
   ) {
-    setProducts(
-      emit,
-      event.products,
-      keyword: '',
-      status: ProductStatus.loaded,
-    );
+    setStateData(emit, event.products);
   }
 
   void onSearchProducts(SearchProductsEvent event, Emitter<ProductState> emit) {
-    setProducts(emit, state.products, keyword: event.keyword);
+    setStateData(emit, state.products, keyword: event.keyword);
   }
 
   void onAddProduct(AddProductEvent event, Emitter<ProductState> emit) {
     if (event.namaProduct.trim().isEmpty) {
-      setError(emit, 'Nama produk tidak boleh kosong');
+      setStateData(
+        emit,
+        state.products,
+        status: ProductStatus.error,
+        keyword: state.keyword,
+        errorMessage: 'Nama produk tidak boleh kosong',
+      );
       return;
     }
 
@@ -43,12 +44,18 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
     final updatedProducts = List<Product>.from(state.products);
     updatedProducts.add(newProduct);
-    setProducts(emit, updatedProducts);
+    setStateData(emit, updatedProducts, keyword: state.keyword);
   }
 
   void onEditProduct(EditProductEvent event, Emitter<ProductState> emit) {
     if (event.namaProduct.trim().isEmpty) {
-      setError(emit, 'Nama produk tidak boleh kosong');
+      setStateData(
+        emit,
+        state.products,
+        status: ProductStatus.error,
+        keyword: state.keyword,
+        errorMessage: 'Nama produk tidak boleh kosong',
+      );
       return;
     }
 
@@ -67,12 +74,18 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         updatedProducts.add(product);
       }
     }
-    setProducts(emit, updatedProducts);
+    setStateData(emit, updatedProducts, keyword: state.keyword);
   }
 
   void onDeleteProduct(DeleteProductEvent event, Emitter<ProductState> emit) {
     if (event.id.trim().isEmpty) {
-      setError(emit, 'ID produk tidak valid');
+      setStateData(
+        emit,
+        state.products,
+        status: ProductStatus.error,
+        keyword: state.keyword,
+        errorMessage: 'ID produk tidak valid',
+      );
       return;
     }
 
@@ -82,35 +95,23 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         updatedProducts.add(product);
       }
     }
-    setProducts(emit, updatedProducts);
+    setStateData(emit, updatedProducts, keyword: state.keyword);
   }
 
-  void setProducts(
+  void setStateData(
     Emitter<ProductState> emit,
     List<Product> products, {
-    String? keyword,
     ProductStatus status = ProductStatus.loaded,
+    String keyword = '',
+    String errorMessage = '',
   }) {
-    final activeKeyword = keyword ?? state.keyword;
     emit(
       ProductState(
         status: status,
         products: products,
-        filteredProducts: filterProducts(products, activeKeyword),
-        keyword: activeKeyword,
-        errorMessage: '',
-      ),
-    );
-  }
-
-  void setError(Emitter<ProductState> emit, String message) {
-    emit(
-      ProductState(
-        status: ProductStatus.error,
-        products: state.products,
-        filteredProducts: state.filteredProducts,
-        keyword: state.keyword,
-        errorMessage: message,
+        filteredProducts: filterProducts(products, keyword),
+        keyword: keyword,
+        errorMessage: errorMessage,
       ),
     );
   }

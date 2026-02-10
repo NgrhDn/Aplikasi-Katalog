@@ -55,6 +55,38 @@ class AddProductSimplePageState extends State<AddProductSimplePage> {
     Navigator.pop(context);
   }
 
+  Widget buildInputField(
+    TextEditingController controller,
+    String label, {
+    int maxLines = 1,
+  }) {
+    return TextField(
+      controller: controller,
+      maxLines: maxLines,
+      onChanged: (String value) {
+        validate();
+      },
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(),
+        errorText: showErrors && controller.text.trim().isEmpty
+            ? 'Wajib diisi'
+            : null,
+      ),
+    );
+  }
+
+  Widget buildSaveButton() {
+    return ElevatedButton(
+      onPressed: submit,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+      ),
+      child: const Text('Simpan'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,60 +95,13 @@ class AddProductSimplePageState extends State<AddProductSimplePage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(
-              controller: nameController,
-              onChanged: (String value) {
-                validate();
-              },
-              decoration: InputDecoration(
-                labelText: 'Nama Produk',
-                border: OutlineInputBorder(),
-                errorText: showErrors && nameController.text.trim().isEmpty
-                    ? 'Wajib diisi'
-                    : null,
-              ),
-            ),
+            buildInputField(nameController, 'Nama Produk'),
             const SizedBox(height: 16),
-            TextField(
-              controller: imageController,
-              onChanged: (String value) {
-                validate();
-              },
-              decoration: InputDecoration(
-                labelText: 'URL Foto',
-                border: OutlineInputBorder(),
-                errorText: showErrors && imageController.text.trim().isEmpty
-                    ? 'Wajib diisi'
-                    : null,
-              ),
-            ),
+            buildInputField(imageController, 'URL Foto'),
             const SizedBox(height: 16),
-            TextField(
-              controller: deskripsiController,
-              maxLines: 3,
-              onChanged: (String value) {
-                validate();
-              },
-              decoration: InputDecoration(
-                labelText: 'Deskripsi',
-                border: OutlineInputBorder(),
-                errorText: showErrors && deskripsiController.text.trim().isEmpty
-                    ? 'Wajib diisi'
-                    : null,
-              ),
-            ),
+            buildInputField(deskripsiController, 'Deskripsi', maxLines: 3),
             const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: submit,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                ),
-                child: const Text('Simpan'),
-              ),
-            ),
+            SizedBox(width: double.infinity, child: buildSaveButton()),
           ],
         ),
       ),

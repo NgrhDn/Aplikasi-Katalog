@@ -67,6 +67,78 @@ class EditProductPageState extends State<EditProductPage> {
     Navigator.pop(context);
   }
 
+  void showDeleteDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Hapus Produk'),
+          content: const Text('Apakah Anda yakin ingin menghapus produk ini?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+              },
+              child: const Text('Batal'),
+            ),
+            TextButton(
+              onPressed: () {
+                widget.bloc.add(DeleteProductEvent(widget.product.id));
+                showMessage('Produk berhasil dihapus');
+                Navigator.pop(dialogContext);
+                Navigator.pop(context);
+              },
+              child: const Text('Hapus', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget buildInputField(
+    TextEditingController controller,
+    String label, {
+    int maxLines = 1,
+  }) {
+    return TextField(
+      controller: controller,
+      maxLines: maxLines,
+      onChanged: (String value) {
+        validate();
+      },
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(),
+        errorText: showErrors && controller.text.trim().isEmpty
+            ? 'Wajib diisi'
+            : null,
+      ),
+    );
+  }
+
+  Widget buildSaveButton() {
+    return ElevatedButton(
+      onPressed: submit,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+      ),
+      child: const Text('Simpan'),
+    );
+  }
+
+  Widget buildDeleteButton() {
+    return ElevatedButton(
+      onPressed: showDeleteDialog,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.red,
+        foregroundColor: Colors.white,
+      ),
+      child: const Text('Hapus'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,106 +147,17 @@ class EditProductPageState extends State<EditProductPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(
-              controller: nameController,
-              onChanged: (String value) {
-                validate();
-              },
-              decoration: InputDecoration(
-                labelText: 'Nama Produk',
-                border: OutlineInputBorder(),
-                errorText: showErrors && nameController.text.trim().isEmpty
-                    ? 'Wajib diisi'
-                    : null,
-              ),
-            ),
+            buildInputField(nameController, 'Nama Produk'),
             const SizedBox(height: 16),
-            TextField(
-              controller: imageController,
-              onChanged: (String value) {
-                validate();
-              },
-              decoration: InputDecoration(
-                labelText: 'URL Foto',
-                border: OutlineInputBorder(),
-                errorText: showErrors && imageController.text.trim().isEmpty
-                    ? 'Wajib diisi'
-                    : null,
-              ),
-            ),
+            buildInputField(imageController, 'URL Foto'),
             const SizedBox(height: 16),
-            TextField(
-              controller: deskripsiController,
-              maxLines: 3,
-              onChanged: (String value) {
-                validate();
-              },
-              decoration: InputDecoration(
-                labelText: 'Deskripsi',
-                border: OutlineInputBorder(),
-                errorText: showErrors && deskripsiController.text.trim().isEmpty
-                    ? 'Wajib diisi'
-                    : null,
-              ),
-            ),
+            buildInputField(deskripsiController, 'Deskripsi', maxLines: 3),
             const SizedBox(height: 24),
             Row(
               children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: submit,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: const Text('Simpan'),
-                  ),
-                ),
+                Expanded(child: buildSaveButton()),
                 const SizedBox(width: 8),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext dialogContext) {
-                          return AlertDialog(
-                            title: const Text('Hapus Produk'),
-                            content: const Text(
-                              'Apakah Anda yakin ingin menghapus produk ini?',
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(dialogContext);
-                                },
-                                child: const Text('Batal'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  widget.bloc.add(
-                                    DeleteProductEvent(widget.product.id),
-                                  );
-                                  showMessage('Produk berhasil dihapus');
-                                  Navigator.pop(dialogContext);
-                                  Navigator.pop(context);
-                                },
-                                child: const Text(
-                                  'Hapus',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: const Text('Hapus'),
-                  ),
-                ),
+                Expanded(child: buildDeleteButton()),
               ],
             ),
           ],
