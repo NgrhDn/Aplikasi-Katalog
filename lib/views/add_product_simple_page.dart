@@ -16,14 +16,43 @@ class AddProductSimplePageState extends State<AddProductSimplePage> {
   TextEditingController imageController = TextEditingController();
   TextEditingController deskripsiController = TextEditingController();
   bool isValid = false;
+  bool showErrors = false;
+
+  void showMessage(String message) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
+  }
 
   void validate() {
-    bool nameNotEmpty = nameController.text.isNotEmpty;
-    bool imageNotEmpty = imageController.text.isNotEmpty;
+    bool nameNotEmpty = nameController.text.trim().isNotEmpty;
+    bool imageNotEmpty = imageController.text.trim().isNotEmpty;
+    bool deskripsiNotEmpty = deskripsiController.text.trim().isNotEmpty;
 
     setState(() {
-      isValid = nameNotEmpty && imageNotEmpty;
+      isValid = nameNotEmpty && imageNotEmpty && deskripsiNotEmpty;
     });
+  }
+
+  void submit() {
+    validate();
+    if (!isValid) {
+      setState(() {
+        showErrors = true;
+      });
+      showMessage('Lengkapi semua data dulu');
+      return;
+    }
+
+    widget.bloc.add(
+      AddProductEvent(
+        namaProduct: nameController.text,
+        fotoUrl: imageController.text,
+        deskripsi: deskripsiController.text,
+      ),
+    );
+    showMessage('Produk berhasil disimpan');
+    Navigator.pop(context);
   }
 
   @override
@@ -39,9 +68,12 @@ class AddProductSimplePageState extends State<AddProductSimplePage> {
               onChanged: (String value) {
                 validate();
               },
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Nama Produk',
                 border: OutlineInputBorder(),
+                errorText: showErrors && nameController.text.trim().isEmpty
+                    ? 'Wajib diisi'
+                    : null,
               ),
             ),
             const SizedBox(height: 16),
@@ -50,9 +82,12 @@ class AddProductSimplePageState extends State<AddProductSimplePage> {
               onChanged: (String value) {
                 validate();
               },
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'URL Foto',
                 border: OutlineInputBorder(),
+                errorText: showErrors && imageController.text.trim().isEmpty
+                    ? 'Wajib diisi'
+                    : null,
               ),
             ),
             const SizedBox(height: 16),
@@ -62,27 +97,19 @@ class AddProductSimplePageState extends State<AddProductSimplePage> {
               onChanged: (String value) {
                 validate();
               },
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Deskripsi',
                 border: OutlineInputBorder(),
+                errorText: showErrors && deskripsiController.text.trim().isEmpty
+                    ? 'Wajib diisi'
+                    : null,
               ),
             ),
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: isValid
-                    ? () {
-                        widget.bloc.add(
-                          AddProductEvent(
-                            namaProduct: nameController.text,
-                            fotoUrl: imageController.text,
-                            deskripsi: deskripsiController.text,
-                          ),
-                        );
-                        Navigator.pop(context);
-                      }
-                    : null,
+                onPressed: submit,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,

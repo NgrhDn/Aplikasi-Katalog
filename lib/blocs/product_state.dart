@@ -16,20 +16,4 @@ class ProductState {
     this.keyword = '',
     this.errorMessage = '',
   });
-
-  ProductState copyWith({
-    ProductStatus? status,
-    List<Product>? products,
-    List<Product>? filteredProducts,
-    String? keyword,
-    String? errorMessage,
-  }) {
-    return ProductState(
-      status: status ?? this.status,
-      products: products ?? this.products,
-      filteredProducts: filteredProducts ?? this.filteredProducts,
-      keyword: keyword ?? this.keyword,
-      errorMessage: errorMessage ?? this.errorMessage,
-    );
-  }
 }

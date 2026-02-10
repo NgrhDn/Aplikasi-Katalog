@@ -41,7 +41,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       deskripsi: event.deskripsi,
     );
 
-    final updatedProducts = [...state.products, newProduct];
+    final updatedProducts = List<Product>.from(state.products);
+    updatedProducts.add(newProduct);
     setProducts(emit, updatedProducts);
   }
 
@@ -51,17 +52,21 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       return;
     }
 
-    final updatedProducts = state.products.map((product) {
+    final updatedProducts = <Product>[];
+    for (final product in state.products) {
       if (product.id == event.id) {
-        return Product(
-          id: product.id,
-          namaProduct: event.namaProduct,
-          fotoUrl: event.fotoUrl,
-          deskripsi: event.deskripsi,
+        updatedProducts.add(
+          Product(
+            id: product.id,
+            namaProduct: event.namaProduct,
+            fotoUrl: event.fotoUrl,
+            deskripsi: event.deskripsi,
+          ),
         );
+      } else {
+        updatedProducts.add(product);
       }
-      return product;
-    }).toList();
+    }
     setProducts(emit, updatedProducts);
   }
 
@@ -71,9 +76,12 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       return;
     }
 
-    final updatedProducts = state.products
-        .where((product) => product.id != event.id)
-        .toList();
+    final updatedProducts = <Product>[];
+    for (final product in state.products) {
+      if (product.id != event.id) {
+        updatedProducts.add(product);
+      }
+    }
     setProducts(emit, updatedProducts);
   }
 
@@ -85,7 +93,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   }) {
     final activeKeyword = keyword ?? state.keyword;
     emit(
-      state.copyWith(
+      ProductState(
         status: status,
         products: products,
         filteredProducts: filterProducts(products, activeKeyword),
@@ -96,7 +104,15 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   }
 
   void setError(Emitter<ProductState> emit, String message) {
-    emit(state.copyWith(status: ProductStatus.error, errorMessage: message));
+    emit(
+      ProductState(
+        status: ProductStatus.error,
+        products: state.products,
+        filteredProducts: state.filteredProducts,
+        keyword: state.keyword,
+        errorMessage: message,
+      ),
+    );
   }
 
   List<Product> filterProducts(List<Product> products, String keyword) {
@@ -105,11 +121,14 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     }
 
     final keywordLower = keyword.toLowerCase();
-    return products
-        .where(
-          (product) => product.namaProduct.toLowerCase().contains(keywordLower),
-        )
-        .toList();
+    final results = <Product>[];
+    for (final product in products) {
+      final nameLower = product.namaProduct.toLowerCase();
+      if (nameLower.contains(keywordLower)) {
+        results.add(product);
+      }
+    }
+    return results;
   }
 
   String generateUniqueId() {

@@ -90,7 +90,7 @@ class HomePageState extends State<HomePage> {
         return Column(
           children: [
             ProductSearchBar(
-              products: state.products,
+              keyword: state.keyword,
               onSearch: (String keyword) {
                 productBloc.add(SearchProductsEvent(keyword));
               },

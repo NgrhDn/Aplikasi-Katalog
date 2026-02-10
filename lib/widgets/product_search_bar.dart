@@ -1,78 +1,60 @@
 import 'package:flutter/material.dart';
-import '../models/product.dart';
 
-class ProductSearchBar extends StatelessWidget {
-  final List<Product> products;
+class ProductSearchBar extends StatefulWidget {
+  final String keyword;
   final Function(String) onSearch;
 
   const ProductSearchBar({
     super.key,
-    required this.products,
+    required this.keyword,
     required this.onSearch,
   });
 
   @override
-  Widget build(BuildContext context) {
-    SearchController searchController = SearchController();
+  State<ProductSearchBar> createState() => ProductSearchBarState();
+}
 
+class ProductSearchBarState extends State<ProductSearchBar> {
+  late final TextEditingController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController(text: widget.keyword);
+  }
+
+  @override
+  void didUpdateWidget(ProductSearchBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.keyword != controller.text) {
+      controller.text = widget.keyword;
+      controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: controller.text.length),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: SearchAnchor(
-        searchController: searchController,
-        builder: (BuildContext context, SearchController controller) {
-          return SearchBar(
-            controller: controller,
-            padding: const WidgetStatePropertyAll<EdgeInsets>(
-              EdgeInsets.symmetric(horizontal: 16.0),
-            ),
-            onTap: () {
-              controller.openView();
-            },
-            onChanged: (String value) {
-              controller.openView();
-            },
-            hintText: 'Cari produk...',
-          );
+      child: TextField(
+        controller: controller,
+        onChanged: (String value) {
+          widget.onSearch(value);
         },
-        suggestionsBuilder:
-            (BuildContext context, SearchController controller) {
-              String keyword = controller.text;
-
-              if (keyword.isEmpty) {
-                return [];
-              }
-
-              List<Widget> suggestions = [];
-              String keywordLower = keyword.toLowerCase();
-
-              for (int i = 0; i < products.length; i++) {
-                Product product = products[i];
-                String productNameLower = product.namaProduct.toLowerCase();
-
-                if (productNameLower.contains(keywordLower)) {
-                  ListTile tile = ListTile(
-                    leading: const Icon(Icons.shopping_bag),
-                    title: Text(product.namaProduct),
-                    subtitle: Text(product.getDeskripsi()),
-                    onTap: () {
-                      controller.closeView(product.namaProduct);
-                      onSearch(product.namaProduct);
-                    },
-                  );
-                  suggestions.add(tile);
-                }
-              }
-
-              if (suggestions.isEmpty) {
-                Widget noResult = ListTile(
-                  title: Text('Tidak ada hasil untuk "$keyword"'),
-                );
-                suggestions.add(noResult);
-              }
-
-              return suggestions;
-            },
+        decoration: const InputDecoration(
+          hintText: 'Cari produk...',
+          prefixIcon: Icon(Icons.search),
+          border: OutlineInputBorder(),
+        ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }
