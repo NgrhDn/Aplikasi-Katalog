@@ -18,6 +18,13 @@ class EditProductPageState extends State<EditProductPage> {
   TextEditingController imageController = TextEditingController();
   TextEditingController deskripsiController = TextEditingController();
   bool isValid = false;
+  bool showErrors = false;
+
+  void showMessage(String message) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
+  }
 
   @override
   void initState() {
@@ -29,12 +36,107 @@ class EditProductPageState extends State<EditProductPage> {
   }
 
   void validate() {
-    bool nameNotEmpty = nameController.text.isNotEmpty;
-    bool imageNotEmpty = imageController.text.isNotEmpty;
+    bool nameNotEmpty = nameController.text.trim().isNotEmpty;
+    bool imageNotEmpty = imageController.text.trim().isNotEmpty;
+    bool deskripsiNotEmpty = deskripsiController.text.trim().isNotEmpty;
 
     setState(() {
-      isValid = nameNotEmpty && imageNotEmpty;
+      isValid = nameNotEmpty && imageNotEmpty && deskripsiNotEmpty;
     });
+  }
+
+  void submit() {
+    validate();
+    if (!isValid) {
+      setState(() {
+        showErrors = true;
+      });
+      showMessage('Lengkapi semua data dulu');
+      return;
+    }
+
+    widget.bloc.add(
+      EditProductEvent(
+        id: widget.product.id,
+        namaProduct: nameController.text,
+        fotoUrl: imageController.text,
+        deskripsi: deskripsiController.text,
+      ),
+    );
+    showMessage('Produk berhasil disimpan');
+    Navigator.pop(context);
+  }
+
+  void showDeleteDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Hapus Produk'),
+          content: const Text('Apakah Anda yakin ingin menghapus produk ini?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+              },
+              child: const Text('Batal'),
+            ),
+            TextButton(
+              onPressed: () {
+                widget.bloc.add(DeleteProductEvent(widget.product.id));
+                showMessage('Produk berhasil dihapus');
+                Navigator.pop(dialogContext);
+                Navigator.pop(context);
+              },
+              child: const Text('Hapus', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget buildInputField(
+    TextEditingController controller,
+    String label, {
+    int maxLines = 1,
+  }) {
+    return TextField(
+      controller: controller,
+      maxLines: maxLines,
+      onChanged: (String value) {
+        validate();
+      },
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(),
+        errorText: showErrors && controller.text.trim().isEmpty
+            ? 'Wajib diisi'
+            : null,
+      ),
+    );
+  }
+
+  Widget buildSaveButton() {
+    return ElevatedButton(
+      onPressed: submit,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+      ),
+      child: const Text('Simpan'),
+    );
+  }
+
+  Widget buildDeleteButton() {
+    return ElevatedButton(
+      onPressed: showDeleteDialog,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.red,
+        foregroundColor: Colors.white,
+      ),
+      child: const Text('Hapus'),
+    );
   }
 
   @override
@@ -45,108 +147,17 @@ class EditProductPageState extends State<EditProductPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(
-              controller: nameController,
-              onChanged: (String value) {
-                validate();
-              },
-              decoration: const InputDecoration(
-                labelText: 'Nama Produk',
-                border: OutlineInputBorder(),
-              ),
-            ),
+            buildInputField(nameController, 'Nama Produk'),
             const SizedBox(height: 16),
-            TextField(
-              controller: imageController,
-              onChanged: (String value) {
-                validate();
-              },
-              decoration: const InputDecoration(
-                labelText: 'URL Foto',
-                border: OutlineInputBorder(),
-              ),
-            ),
+            buildInputField(imageController, 'URL Foto'),
             const SizedBox(height: 16),
-            TextField(
-              controller: deskripsiController,
-              maxLines: 3,
-              onChanged: (String value) {
-                validate();
-              },
-              decoration: const InputDecoration(
-                labelText: 'Deskripsi',
-                border: OutlineInputBorder(),
-              ),
-            ),
+            buildInputField(deskripsiController, 'Deskripsi', maxLines: 3),
             const SizedBox(height: 24),
             Row(
               children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: isValid
-                        ? () {
-                            widget.bloc.add(
-                              EditProductEvent(
-                                id: widget.product.id,
-                                namaProduct: nameController.text,
-                                fotoUrl: imageController.text,
-                                deskripsi: deskripsiController.text,
-                              ),
-                            );
-                            Navigator.pop(context);
-                          }
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: const Text('Simpan'),
-                  ),
-                ),
+                Expanded(child: buildSaveButton()),
                 const SizedBox(width: 8),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext dialogContext) {
-                          return AlertDialog(
-                            title: const Text('Hapus Produk'),
-                            content: const Text(
-                              'Apakah Anda yakin ingin menghapus produk ini?',
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(dialogContext);
-                                },
-                                child: const Text('Batal'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  widget.bloc.add(
-                                    DeleteProductEvent(widget.product.id),
-                                  );
-                                  Navigator.pop(dialogContext);
-                                  Navigator.pop(context);
-                                },
-                                child: const Text(
-                                  'Hapus',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: const Text('Hapus'),
-                  ),
-                ),
+                Expanded(child: buildDeleteButton()),
               ],
             ),
           ],
