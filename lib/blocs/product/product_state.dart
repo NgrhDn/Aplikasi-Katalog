@@ -11,7 +11,6 @@ class ProductState {
   final List<Product> filteredProducts;
   // Kata kunci pencarian
   final String keyword;
-  // Pesan error
   final String errorMessage;
 
   // Nilai awal state BLoC
