@@ -9,6 +9,7 @@ List<Product> generateProducts() {
       namaProduct: 'iPhone 15 Pro Max',
       fotoUrl: 'https://picsum.photos/seed/product1/400/400',
       deskripsi: 'Smartphone flagship dengan kamera pro dan layar besar.',
+      harga: 22000000,
     ),
   );
   products.add(
@@ -17,6 +18,7 @@ List<Product> generateProducts() {
       namaProduct: 'Samsung Galaxy S24 Ultra',
       fotoUrl: 'https://picsum.photos/seed/product2/400/400',
       deskripsi: 'Ponsel premium dengan S Pen dan performa cepat.',
+      harga: 20000000,
     ),
   );
   products.add(
@@ -25,6 +27,7 @@ List<Product> generateProducts() {
       namaProduct: 'Google Pixel 8 Pro',
       fotoUrl: 'https://picsum.photos/seed/product3/400/400',
       deskripsi: 'Kamera pintar dengan AI dan warna layar natural.',
+      harga: 16000000,
     ),
   );
   products.add(
@@ -33,6 +36,7 @@ List<Product> generateProducts() {
       namaProduct: 'MacBook Pro 16"',
       fotoUrl: 'https://picsum.photos/seed/product4/400/400',
       deskripsi: 'Laptop profesional bertenaga untuk kerja kreatif.',
+      harga: 49000000,
     ),
   );
   products.add(
@@ -41,6 +45,7 @@ List<Product> generateProducts() {
       namaProduct: 'iPad Air M2',
       fotoUrl: 'https://picsum.photos/seed/product5/400/400',
       deskripsi: 'Tablet ringan dengan chip kencang untuk produktivitas.',
+      harga: 11000000,
     ),
   );
   products.add(
@@ -49,6 +54,7 @@ List<Product> generateProducts() {
       namaProduct: 'Sony WH-1000XM5 Headphones',
       fotoUrl: 'https://picsum.photos/seed/product6/400/400',
       deskripsi: 'Headphone noise canceling nyaman untuk perjalanan.',
+      harga: 6000000,
     ),
   );
   products.add(
@@ -57,6 +63,7 @@ List<Product> generateProducts() {
       namaProduct: 'AirPods Pro 2',
       fotoUrl: 'https://picsum.photos/seed/product7/400/400',
       deskripsi: 'Earbuds TWS dengan suara jernih dan ANC.',
+      harga: 4000000,
     ),
   );
   products.add(
@@ -65,6 +72,7 @@ List<Product> generateProducts() {
       namaProduct: 'Samsung Galaxy Watch 6',
       fotoUrl: 'https://picsum.photos/seed/product8/400/400',
       deskripsi: 'Smartwatch untuk kesehatan dan notifikasi harian.',
+      harga: 4500000,
     ),
   );
   products.add(
@@ -73,6 +81,7 @@ List<Product> generateProducts() {
       namaProduct: 'DJI Air 3S Drone',
       fotoUrl: 'https://picsum.photos/seed/product9/400/400',
       deskripsi: 'Drone stabil untuk foto udara berkualitas tinggi.',
+      harga: 18000000,
     ),
   );
   products.add(
@@ -81,6 +90,7 @@ List<Product> generateProducts() {
       namaProduct: 'GoPro Hero 12',
       fotoUrl: 'https://picsum.photos/seed/product10/400/400',
       deskripsi: 'Action cam tahan banting untuk petualangan.',
+      harga: 6500000,
     ),
   );
   products.add(
@@ -89,6 +99,7 @@ List<Product> generateProducts() {
       namaProduct: 'Dell XPS 15 Laptop',
       fotoUrl: 'https://picsum.photos/seed/product11/400/400',
       deskripsi: 'Laptop premium dengan layar tajam dan build solid.',
+      harga: 29000000,
     ),
   );
   products.add(
@@ -97,6 +108,7 @@ List<Product> generateProducts() {
       namaProduct: 'Asus ROG Gaming Laptop',
       fotoUrl: 'https://picsum.photos/seed/product12/400/400',
       deskripsi: 'Laptop gaming dengan performa tinggi dan RGB.',
+      harga: 26000000,
     ),
   );
   products.add(
@@ -105,6 +117,7 @@ List<Product> generateProducts() {
       namaProduct: 'LG 4K Monitor 27"',
       fotoUrl: 'https://picsum.photos/seed/product13/400/400',
       deskripsi: 'Monitor 4K untuk editing dan tampilan detail.',
+      harga: 5500000,
     ),
   );
   products.add(
@@ -113,6 +126,7 @@ List<Product> generateProducts() {
       namaProduct: 'Logitech MX Master 3S',
       fotoUrl: 'https://picsum.photos/seed/product14/400/400',
       deskripsi: 'Mouse ergonomis untuk kerja panjang dan presisi.',
+      harga: 1800000,
     ),
   );
   products.add(
@@ -121,6 +135,7 @@ List<Product> generateProducts() {
       namaProduct: 'Mechanical RGB Keyboard',
       fotoUrl: 'https://picsum.photos/seed/product15/400/400',
       deskripsi: 'Keyboard mekanik dengan lampu RGB dan feel mantap.',
+      harga: 1300000,
     ),
   );
   products.add(
@@ -129,6 +144,7 @@ List<Product> generateProducts() {
       namaProduct: 'Razer DeathAdder V3',
       fotoUrl: 'https://picsum.photos/seed/product16/400/400',
       deskripsi: 'Mouse gaming ringan dengan sensor presisi tinggi.',
+      harga: 1100000,
     ),
   );
   products.add(
@@ -137,6 +153,7 @@ List<Product> generateProducts() {
       namaProduct: 'Corsair Gaming Headset',
       fotoUrl: 'https://picsum.photos/seed/product17/400/400',
       deskripsi: 'Headset gaming dengan mic jernih dan suara bass.',
+      harga: 1500000,
     ),
   );
   products.add(
@@ -145,6 +162,7 @@ List<Product> generateProducts() {
       namaProduct: 'SanDisk Extreme Pro SSD',
       fotoUrl: 'https://picsum.photos/seed/product18/400/400',
       deskripsi: 'SSD cepat untuk transfer data dan editing.',
+      harga: 2400000,
     ),
   );
   products.add(
@@ -153,6 +171,7 @@ List<Product> generateProducts() {
       namaProduct: 'Samsung 870 QVO SSD',
       fotoUrl: 'https://picsum.photos/seed/product19/400/400',
       deskripsi: 'SSD SATA kapasitas besar untuk penyimpanan.',
+      harga: 1600000,
     ),
   );
   products.add(
@@ -161,6 +180,7 @@ List<Product> generateProducts() {
       namaProduct: 'Western Digital Blue SSD',
       fotoUrl: 'https://picsum.photos/seed/product20/400/400',
       deskripsi: 'SSD stabil untuk upgrade PC atau laptop.',
+      harga: 1200000,
     ),
   );
   products.add(
@@ -169,6 +189,7 @@ List<Product> generateProducts() {
       namaProduct: 'Seagate Barracuda HDD',
       fotoUrl: 'https://picsum.photos/seed/product21/400/400',
       deskripsi: 'HDD andal untuk arsip data ukuran besar.',
+      harga: 900000,
     ),
   );
   products.add(
@@ -177,6 +198,7 @@ List<Product> generateProducts() {
       namaProduct: 'Anker Power Bank 30000mAh',
       fotoUrl: 'https://picsum.photos/seed/product22/400/400',
       deskripsi: 'Power bank kapasitas besar untuk perjalanan.',
+      harga: 1300000,
     ),
   );
   products.add(
@@ -185,6 +207,7 @@ List<Product> generateProducts() {
       namaProduct: 'Belkin USB-C Hub',
       fotoUrl: 'https://picsum.photos/seed/product23/400/400',
       deskripsi: 'Hub USB-C untuk konektivitas perangkat lengkap.',
+      harga: 900000,
     ),
   );
   products.add(
@@ -193,6 +216,7 @@ List<Product> generateProducts() {
       namaProduct: 'CalDigit TS4 Thunderbolt Dock',
       fotoUrl: 'https://picsum.photos/seed/product24/400/400',
       deskripsi: 'Dock premium dengan banyak port cepat.',
+      harga: 6000000,
     ),
   );
   products.add(
@@ -201,6 +225,7 @@ List<Product> generateProducts() {
       namaProduct: 'Sony a7IV Mirrorless Camera',
       fotoUrl: 'https://picsum.photos/seed/product25/400/400',
       deskripsi: 'Kamera mirrorless untuk foto dan video profesional.',
+      harga: 39000000,
     ),
   );
   products.add(
@@ -209,6 +234,7 @@ List<Product> generateProducts() {
       namaProduct: 'Canon EOS R6 Mark II',
       fotoUrl: 'https://picsum.photos/seed/product26/400/400',
       deskripsi: 'Kamera cepat dengan autofocus andal.',
+      harga: 33000000,
     ),
   );
   products.add(
@@ -217,6 +243,7 @@ List<Product> generateProducts() {
       namaProduct: 'Nikon Z9 Professional Camera',
       fotoUrl: 'https://picsum.photos/seed/product27/400/400',
       deskripsi: 'Kamera flagship untuk kebutuhan pro.',
+      harga: 90000000,
     ),
   );
   products.add(
@@ -225,6 +252,7 @@ List<Product> generateProducts() {
       namaProduct: 'Tamron 28-75mm Lens',
       fotoUrl: 'https://picsum.photos/seed/product28/400/400',
       deskripsi: 'Lensa serbaguna untuk berbagai situasi.',
+      harga: 13000000,
     ),
   );
   products.add(
@@ -233,6 +261,7 @@ List<Product> generateProducts() {
       namaProduct: 'Peak Design Peak Camera Bag',
       fotoUrl: 'https://picsum.photos/seed/product29/400/400',
       deskripsi: 'Tas kamera nyaman dan aman untuk gear.',
+      harga: 2500000,
     ),
   );
   products.add(
@@ -241,6 +270,7 @@ List<Product> generateProducts() {
       namaProduct: 'DJI Ronin 4D Gimbal',
       fotoUrl: 'https://picsum.photos/seed/product30/400/400',
       deskripsi: 'Gimbal sinematik untuk video stabil.',
+      harga: 120000000,
     ),
   );
   products.add(
@@ -249,6 +279,7 @@ List<Product> generateProducts() {
       namaProduct: 'Rode Wireless GO II',
       fotoUrl: 'https://picsum.photos/seed/product31/400/400',
       deskripsi: 'Mic wireless ringkas untuk konten kreator.',
+      harga: 4300000,
     ),
   );
   products.add(
@@ -257,6 +288,7 @@ List<Product> generateProducts() {
       namaProduct: 'Audio-Technica AT2020 Microphone',
       fotoUrl: 'https://picsum.photos/seed/product32/400/400',
       deskripsi: 'Mic kondensor jernih untuk rekaman suara.',
+      harga: 1900000,
     ),
   );
   products.add(
@@ -265,6 +297,7 @@ List<Product> generateProducts() {
       namaProduct: 'Elgato Key Light Air',
       fotoUrl: 'https://picsum.photos/seed/product33/400/400',
       deskripsi: 'Lampu streaming dengan pencahayaan merata.',
+      harga: 2300000,
     ),
   );
   products.add(
@@ -273,6 +306,7 @@ List<Product> generateProducts() {
       namaProduct: 'NZXT H7 Flow Case',
       fotoUrl: 'https://picsum.photos/seed/product34/400/400',
       deskripsi: 'Casing airflow bagus untuk PC gaming.',
+      harga: 2200000,
     ),
   );
   products.add(
@@ -281,6 +315,7 @@ List<Product> generateProducts() {
       namaProduct: 'Corsair LL120 RGB Fans',
       fotoUrl: 'https://picsum.photos/seed/product35/400/400',
       deskripsi: 'Kipas RGB dengan performa pendinginan stabil.',
+      harga: 1500000,
     ),
   );
   products.add(
@@ -289,6 +324,7 @@ List<Product> generateProducts() {
       namaProduct: 'EVGA GeForce RTX 4090',
       fotoUrl: 'https://picsum.photos/seed/product36/400/400',
       deskripsi: 'GPU kelas atas untuk gaming 4K.',
+      harga: 35000000,
     ),
   );
   products.add(
@@ -297,6 +333,7 @@ List<Product> generateProducts() {
       namaProduct: 'AMD Ryzen 9 9900X CPU',
       fotoUrl: 'https://picsum.photos/seed/product37/400/400',
       deskripsi: 'Prosesor kencang untuk multitasking berat.',
+      harga: 11000000,
     ),
   );
   products.add(
@@ -305,6 +342,7 @@ List<Product> generateProducts() {
       namaProduct: 'Intel Core i9-14900K',
       fotoUrl: 'https://picsum.photos/seed/product38/400/400',
       deskripsi: 'CPU flagship untuk performa maksimal.',
+      harga: 12000000,
     ),
   );
   products.add(
@@ -313,6 +351,7 @@ List<Product> generateProducts() {
       namaProduct: 'ASUS ROG Crosshair X970-E',
       fotoUrl: 'https://picsum.photos/seed/product39/400/400',
       deskripsi: 'Motherboard premium untuk enthusiast.',
+      harga: 10000000,
     ),
   );
   products.add(
@@ -321,6 +360,7 @@ List<Product> generateProducts() {
       namaProduct: 'Kingston Fury Beast RAM 32GB',
       fotoUrl: 'https://picsum.photos/seed/product40/400/400',
       deskripsi: 'RAM cepat untuk performa sistem stabil.',
+      harga: 1900000,
     ),
   );
   products.add(
@@ -329,6 +369,7 @@ List<Product> generateProducts() {
       namaProduct: 'Fractal Design North Case',
       fotoUrl: 'https://picsum.photos/seed/product41/400/400',
       deskripsi: 'Casing elegan dengan airflow baik.',
+      harga: 2400000,
     ),
   );
   products.add(
@@ -337,6 +378,7 @@ List<Product> generateProducts() {
       namaProduct: 'be quiet! Dark Rock Pro 4',
       fotoUrl: 'https://picsum.photos/seed/product42/400/400',
       deskripsi: 'Cooling CPU senyap dengan performa tinggi.',
+      harga: 1700000,
     ),
   );
   products.add(
@@ -345,6 +387,7 @@ List<Product> generateProducts() {
       namaProduct: 'Seasonic Prime 1300W PSU',
       fotoUrl: 'https://picsum.photos/seed/product43/400/400',
       deskripsi: 'PSU premium untuk rig high-end.',
+      harga: 4300000,
     ),
   );
   products.add(
@@ -353,6 +396,7 @@ List<Product> generateProducts() {
       namaProduct: 'LG OLED 55" TV',
       fotoUrl: 'https://picsum.photos/seed/product44/400/400',
       deskripsi: 'TV OLED dengan warna hitam pekat.',
+      harga: 23000000,
     ),
   );
   products.add(
@@ -361,6 +405,7 @@ List<Product> generateProducts() {
       namaProduct: 'Samsung QN95D 85" TV',
       fotoUrl: 'https://picsum.photos/seed/product45/400/400',
       deskripsi: 'TV besar dengan kecerahan tinggi.',
+      harga: 60000000,
     ),
   );
   products.add(
@@ -369,6 +414,7 @@ List<Product> generateProducts() {
       namaProduct: 'TCL 98" Mini-LED TV',
       fotoUrl: 'https://picsum.photos/seed/product46/400/400',
       deskripsi: 'TV jumbo untuk pengalaman sinematik.',
+      harga: 80000000,
     ),
   );
   products.add(
@@ -377,6 +423,7 @@ List<Product> generateProducts() {
       namaProduct: 'Sonos Arc Soundbar',
       fotoUrl: 'https://picsum.photos/seed/product47/400/400',
       deskripsi: 'Soundbar premium dengan suara ruang.',
+      harga: 13000000,
     ),
   );
   products.add(
@@ -385,6 +432,7 @@ List<Product> generateProducts() {
       namaProduct: 'Yamaha YHT-4950U Home Theater',
       fotoUrl: 'https://picsum.photos/seed/product48/400/400',
       deskripsi: 'Home theater lengkap untuk hiburan keluarga.',
+      harga: 5000000,
     ),
   );
   products.add(
@@ -393,6 +441,7 @@ List<Product> generateProducts() {
       namaProduct: 'KEF LS50 Wireless Speaker',
       fotoUrl: 'https://picsum.photos/seed/product49/400/400',
       deskripsi: 'Speaker wireless dengan suara detail.',
+      harga: 23000000,
     ),
   );
   products.add(
@@ -401,6 +450,7 @@ List<Product> generateProducts() {
       namaProduct: 'Audio Pro Link Speaker',
       fotoUrl: 'https://picsum.photos/seed/product50/400/400',
       deskripsi: 'Speaker ringkas dengan bass mantap.',
+      harga: 4000000,
     ),
   );
   return products;

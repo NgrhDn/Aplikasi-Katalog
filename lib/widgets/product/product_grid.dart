@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import '../models/product.dart';
+import '../../models/product.dart';
 import 'product_card.dart';
 
 class ProductGrid extends StatelessWidget {
   final List<Product> products;
-  final Function(Product)? onProductTap;
+  final ValueChanged<Product>? onProductTap;
+  final ValueChanged<Product>? onAddToCart;
 
-  const ProductGrid({super.key, required this.products, this.onProductTap});
+  const ProductGrid({
+    super.key,
+    required this.products,
+    this.onProductTap,
+    this.onAddToCart,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,23 +31,20 @@ class ProductGrid extends StatelessWidget {
               int column = getColumnCount(size.maxWidth);
 
               return GridView.builder(
-                padding: const EdgeInsets.all(12),
-                itemCount: products.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                padding: const EdgeInsets.all(12), // memberi jarak 12 pixel
+                itemCount: products.length, // jumlah produk
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount( // mengatur jumlah kolom
                   crossAxisCount: column,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  childAspectRatio: 0.7,
+                  crossAxisSpacing: 12, // memberi jarak antar kolom 12 pixel kebawah
+                  mainAxisSpacing: 12, // memberi jarak antar baris 12 pixel ke kanan
+                  childAspectRatio: 0.7, // mengatur rasio lebar dan tinggi
                 ),
                 itemBuilder: (context, index) {
-                  Product product = products[index];
+                  final product = products[index];
                   return ProductCard(
                     product: product,
-                    onTap: onProductTap != null
-                        ? () {
-                            onProductTap!(product);
-                          }
-                        : null,
+                    onTap: onProductTap == null ? null : () => onProductTap!(product), 
+                    onAddToCart: onAddToCart == null ? null : () => onAddToCart!(product),
                   );
                 },
               );
