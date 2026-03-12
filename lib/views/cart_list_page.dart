@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../blocs/cart/cart_bloc.dart';
 import '../blocs/cart/cart_event.dart';
 import '../blocs/cart/cart_state.dart';
@@ -11,6 +12,12 @@ class CartListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final rupiahFormatter = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 2,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cart List'),
@@ -29,9 +36,7 @@ class CartListPage extends StatelessWidget {
         builder: (BuildContext context, CartState state) {
           if (state.isEmpty) {
             // Tampil jika belum ada produk
-            return const Center(
-              child: Text('Cart masih kosong'),
-            );
+            return const Center(child: Text('Cart masih kosong'));
           }
 
           return Column(
@@ -50,8 +55,10 @@ class CartListPage extends StatelessWidget {
                       item: item,
                       onRemoveOne: () {
                         // Kurangi 1 jumlah item di keranjang
-                        context.read<CartBloc>().add( 
-                          RemoveFromCartEvent(item.product.id), // event removefromcart
+                        context.read<CartBloc>().add(
+                          RemoveFromCartEvent(
+                            item.product.id,
+                          ), // event removefromcart
                         );
                       },
                       onAddOne: () {
@@ -66,13 +73,17 @@ class CartListPage extends StatelessWidget {
               ),
               // membuat kotak
               Container(
-                width: double.infinity,// membuat lebar penuh layar
-                padding: const EdgeInsets.all(16), // memberi jarak dalam kotak 16 pixel
+                width: double.infinity, // membuat lebar penuh layar
+                padding: const EdgeInsets.all(
+                  16,
+                ), // memberi jarak dalam kotak 16 pixel
                 color: Colors.black12,
                 // jumlah item dan total harga
                 child: Text(
-                  'Total item: ${state.totalItems} | Total harga: Rp ${state.totalHarga}',
-                  style: const TextStyle(fontWeight: FontWeight.bold), // membuat teks tebal
+                  'Total item: ${state.totalItems} | Total harga: ${rupiahFormatter.format(state.totalHarga)}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ), // membuat teks tebal
                 ),
               ),
             ],

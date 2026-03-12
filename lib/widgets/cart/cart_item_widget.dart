@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../models/cart_item.dart';
 
 class CartItemWidget extends StatelessWidget {
@@ -15,13 +16,19 @@ class CartItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final rupiahFormatter = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
+
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(item.product.fotoUrl),
       ),
       title: Text(item.product.namaProduct),
       subtitle: Text(
-        'Qty: ${item.quantity} • Subtotal: Rp ${item.product.harga * item.quantity}',
+        'Jumlah item : ${item.quantity} • Subtotal: ${rupiahFormatter.format(item.product.harga * item.quantity)}',
       ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
