@@ -74,11 +74,12 @@ class AddProductSimplePageState extends State<AddProductSimplePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Tambah Produk')),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
           key: formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               buildInputField(
                 controller: nameController,
@@ -127,7 +128,7 @@ class AddProductSimplePageState extends State<AddProductSimplePage> {
                 },
               ),
               const SizedBox(height: 24),
-              SizedBox(width: double.infinity, child: buildSaveButton()),
+              buildSaveButton(),
             ],
           ),
         ),
